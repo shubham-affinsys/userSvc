@@ -1,0 +1,44 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Django migrations
+*.log
+*.sqlite3
+*/migrations/__pycache__/
+*/migrations/*.pyc
+*/migrations/*.pyo
+*/migrations/*.pyd
+*/migrations/*.py
+
+# Local configuration
+*.env
+*.local
+
+# Static files
+/static/
+/media/
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Virtual environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Cache files
+*.pyc
+*.pyo
+
+# Other files to ignore
+.DS_Store
+Thumbs.db
+*.bak
+*.swp
+.vercel

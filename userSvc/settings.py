@@ -41,6 +41,8 @@ INSTALLED_APPS = [
 
 EXTERNAL_APPS=[
     "users",
+    "rest_framework",
+    'rest_framework.authtoken',
 ]
 
 INSTALLED_APPS += EXTERNAL_APPS
@@ -79,12 +81,31 @@ WSGI_APPLICATION = 'userSvc.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+from os import getenv
+from dotenv import load_dotenv
+load_dotenv()
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': getenv('POSTGRES_DB'),  
+        'USER': getenv('POSTGRES_USER'),  
+        'PASSWORD': getenv('POSTGRES_PASS'),  
+        'HOST': getenv('POSTGRES_HOST'),  
+        'PORT': getenv('POSTGRES_PORT'),  
+        'OPTIONS': {'sslmode': 'require'}
     }
 }
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
+
 
 
 # Password validation
@@ -130,3 +151,54 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app", ".now.sh"]
+
+
+
+
+
+#logging
+import os
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "default": {
+            "format": "%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
+        },
+        "django.server": {
+            "format": "%(levelname)s [%(asctime)s] %(message)s",
+        },
+        "root": {
+            "format": "%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
+        },
+        "app": {
+            "format": "%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "default", 
+        },
+        "app_console": {
+            "class": "logging.StreamHandler",
+            "formatter": "app", 
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "WARNING",
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "app": {
+            "handlers": ["app_console"], 
+            "level": "INFO",
+            "propagate": False,
+        },
+    },
+}
